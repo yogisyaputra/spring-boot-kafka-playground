@@ -5,6 +5,7 @@
 # EXCLUDE: error yang dikecualikan (mengandung ILLEGAL) -> langsung DLT
 POST {{host}}/api/messages/retry/exclude
 Content-Type: {{json}}
+X-Trace-Id: {{$uuid}}
 
 {
   "text": "this is ILLEGAL and should not retry"
@@ -14,6 +15,7 @@ Content-Type: {{json}}
 # EXCLUDE: error umum -> ikut staged retry
 POST {{host}}/api/messages/retry/exclude
 Content-Type: {{json}}
+X-Trace-Id: {{$uuid}}
 
 {
   "text": "please FAIL me (exclude topic - general error)"

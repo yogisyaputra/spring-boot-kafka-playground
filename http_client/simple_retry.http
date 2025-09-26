@@ -21,6 +21,7 @@ Content-Type: {{json}}
 # SIMPLE-RETRY: gagal -> retry 3x in-place lalu DLT
 POST {{host}}/api/messages/retry/simple
 Content-Type: {{json}}
+X-Trace-Id: {{$uuid}}
 
 {
   "text": "please FAIL me (simple)"

@@ -6,6 +6,7 @@
 # NO-RETRY: sukses (tidak mengandung FAIL)
 POST {{host}}/api/messages/noretry
 Content-Type: {{json}}
+X-Trace-Id: {{$uuid}}
 
 {
   "text": "hello (no-retry) OK"
@@ -15,6 +16,7 @@ Content-Type: {{json}}
 # NO-RETRY: gagal -> langsung DLT (demo.noretry.DLT)
 POST {{host}}/api/messages/noretry
 Content-Type: {{json}}
+X-Trace-Id: {{$uuid}}
 
 {
   "text": "please FAIL me (no-retry)"

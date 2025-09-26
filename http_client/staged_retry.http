@@ -9,6 +9,7 @@
 # STAGED: sukses
 POST {{host}}/api/messages/retry/staged
 Content-Type: {{json}}
+X-Trace-Id: {{$uuid}}
 
 {
   "text": "hello (staged) OK"
@@ -19,6 +20,7 @@ Content-Type: {{json}}
 # (butuh waktu sesuai delay: 5s -> 30s -> 2m sebelum ke DLT)
 POST {{host}}/api/messages/retry/staged
 Content-Type: {{json}}
+X-Trace-Id: {{$uuid}}
 
 {
   "text": "please FAIL me (staged)"
