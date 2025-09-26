@@ -1,0 +1,20 @@
+@host = http://localhost:8081
+@json = application/json
+@user = ops-user
+
+# EXCLUDE: error yang dikecualikan (mengandung ILLEGAL) -> langsung DLT
+POST {{host}}/api/messages/retry/exclude
+Content-Type: {{json}}
+
+{
+  "text": "this is ILLEGAL and should not retry"
+}
+
+###
+# EXCLUDE: error umum -> ikut staged retry
+POST {{host}}/api/messages/retry/exclude
+Content-Type: {{json}}
+
+{
+  "text": "please FAIL me (exclude topic - general error)"
+}

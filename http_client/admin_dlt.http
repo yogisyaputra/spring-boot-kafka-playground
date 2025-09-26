@@ -1,0 +1,60 @@
+### =========================
+### ENV & COMMON
+### =========================
+@host = http://localhost:8081
+@json = application/json
+@user = ops-user
+
+### =========================
+### ADMIN DLT - LIST
+### =========================
+
+# List semua DLT (default: NEW+REPLAYED campur, latest dulu)
+GET {{host}}/admin/dlt?page=0&size=20
+
+###
+# List filter status=NEW saja
+GET {{host}}/admin/dlt?status=NEW&page=0&size=20
+
+###
+# List filter status=REPLAYED saja
+GET {{host}}/admin/dlt?status=REPLAYED&page=0&size=20
+
+###
+# List filter per topic (contoh: demo.retry.staged)
+GET {{host}}/admin/dlt?topic=demo.retry.staged&page=0&size=20
+
+### =========================
+### ADMIN DLT - REPLAY (single)
+### =========================
+
+# 1A. Ambil 1 item NEW terbaru lalu simpan id ke variabel {{dltId}}
+# (VS Code REST Client: gunakan response handler JS)
+# Jalankan ini sekali, lalu jalankan 6B.
+GET {{host}}/admin/dlt?status=NEW&page=0&size=1
+> {%
+  const arr = JSON.parse(response.body);
+  if (Array.isArray(arr) && arr.length > 0) {
+    client.global.set("dltId", arr[0].id);
+  } else {
+    client.log("Tidak ada item NEW untuk direplay.");
+  }
+%}
+
+###
+# 1B. Replay item dengan id yang sudah tersimpan di {{dltId}}
+# Header X-User dipakai untuk audit 'replayed_by'
+POST {{host}}/admin/dlt/{{dltId}}/replay
+X-User: {{user}}
+
+### =========================
+### 2) VERIFIKASI SETELAH REPLAY
+### =========================
+
+# 2A. Pastikan status REPLAYED muncul
+GET {{host}}/admin/dlt?status=REPLAYED&page=0&size=20
+
+###
+# 2B. (Opsional) Lihat per topic yang barusan di-replay
+# Ganti topic sesuai asal pesannya, mis. demo.retry.staged atau demo.retry.simple
+GET {{host}}/admin/dlt?topic=demo.retry.staged&status=REPLAYED&page=0&size=20

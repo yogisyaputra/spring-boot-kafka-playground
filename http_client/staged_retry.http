@@ -1,0 +1,25 @@
+@host = http://localhost:8081
+@json = application/json
+@user = ops-user
+
+### =========================
+### STAGED RETRY (retry topics: -retry-0, -retry-1, -retry-2)
+### =========================
+
+# STAGED: sukses
+POST {{host}}/api/messages/retry/staged
+Content-Type: {{json}}
+
+{
+  "text": "hello (staged) OK"
+}
+
+###
+# STAGED: gagal -> mengalir lewat retry topics lalu DLT
+# (butuh waktu sesuai delay: 5s -> 30s -> 2m sebelum ke DLT)
+POST {{host}}/api/messages/retry/staged
+Content-Type: {{json}}
+
+{
+  "text": "please FAIL me (staged)"
+}

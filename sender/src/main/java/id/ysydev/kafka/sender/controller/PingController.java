@@ -1,4 +1,4 @@
-package id.ysydev.kafka.consumer.api;
+package id.ysydev.kafka.sender.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -6,10 +6,10 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Map;
 
 /**
- * Endpoint ping sederhana untuk cek liveness service consumer.
+ * Endpoint health/ping informal untuk cek cepat service hidup.
  */
 @RestController
 class PingController {
     @GetMapping("/ping")
-    Map<String, Object> ping() { return Map.of("ok", true, "service", "consumer"); }
+    Map<String, Object> ping() { return Map.of("ok", true, "service", "sender"); }
 }

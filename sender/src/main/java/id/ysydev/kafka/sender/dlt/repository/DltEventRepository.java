@@ -1,5 +1,6 @@
-package id.ysydev.kafka.sender.dlt;
+package id.ysydev.kafka.sender.dlt.repository;
 
+import id.ysydev.kafka.sender.dlt.entity.DltEvent;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 

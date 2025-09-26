@@ -1,5 +1,8 @@
-package id.ysydev.kafka.sender.dlt;
+package id.ysydev.kafka.sender.dlt.service;
 
+import id.ysydev.kafka.sender.dlt.entity.DltEvent;
+import id.ysydev.kafka.sender.dlt.repository.DltEventRepository;
+import jakarta.transaction.Transactional;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
@@ -8,16 +11,18 @@ import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 @Service
-public class DltReplayService {
+public class DltReplayServiceImpl implements DltReplayService{
 
     private final DltEventRepository repo;
     private final KafkaTemplate<String, byte[]> byteTemplate;
 
-    public DltReplayService(DltEventRepository repo, KafkaTemplate<String, byte[]> byteTemplate) {
+    public DltReplayServiceImpl(DltEventRepository repo, KafkaTemplate<String, byte[]> byteTemplate) {
         this.repo = repo;
         this.byteTemplate = byteTemplate;
     }
 
+    @Transactional
+    @Override
     public DltEvent replay(UUID id, String replayedBy) {
         var e = repo.findById(id).orElseThrow();
         byte[] body = e.getPayload().getBytes(StandardCharsets.UTF_8);

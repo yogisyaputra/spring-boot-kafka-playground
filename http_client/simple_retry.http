@@ -1,0 +1,27 @@
+### =========================
+### ENV & COMMON
+### =========================
+@host = http://localhost:8081
+@json = application/json
+@user = ops-user
+
+### =========================
+### SIMPLE RETRY (in-place, 3x)
+### =========================
+
+# SIMPLE-RETRY: sukses
+POST {{host}}/api/messages/retry/simple
+Content-Type: {{json}}
+
+{
+  "text": "hello (simple) OK"
+}
+
+###
+# SIMPLE-RETRY: gagal -> retry 3x in-place lalu DLT
+POST {{host}}/api/messages/retry/simple
+Content-Type: {{json}}
+
+{
+  "text": "please FAIL me (simple)"
+}

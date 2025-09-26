@@ -1,4 +1,4 @@
-package id.ysydev.kafka.sender.model;
+package id.ysydev.kafka.sender.kafka;
 
 import java.time.Instant;
 

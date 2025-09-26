@@ -1,10 +1,6 @@
 server:
   port: 8081
 
-app:
-  topic: demo.messages   # Nama topic utama; pastikan sama dengan yang digunakan consumer
-  topic2: demo.notifications
-
 spring:
   application:
     name: kafka-sender

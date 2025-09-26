@@ -1,4 +1,4 @@
-package id.ysydev.kafka.consumer.model;
+package id.ysydev.kafka.consumer.payload;
 
 import java.time.Instant;
 

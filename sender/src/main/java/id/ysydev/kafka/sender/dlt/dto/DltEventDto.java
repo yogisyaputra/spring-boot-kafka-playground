@@ -1,4 +1,4 @@
-package id.ysydev.kafka.sender.dlt;
+package id.ysydev.kafka.sender.dlt.dto;
 
 public record DltEventDto(
         java.util.UUID id,

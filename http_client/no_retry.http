@@ -1,0 +1,21 @@
+
+@host = http://localhost:8081
+@json = application/json
+@user = ops-user
+
+# NO-RETRY: sukses (tidak mengandung FAIL)
+POST {{host}}/api/messages/noretry
+Content-Type: {{json}}
+
+{
+  "text": "hello (no-retry) OK"
+}
+
+###
+# NO-RETRY: gagal -> langsung DLT (demo.noretry.DLT)
+POST {{host}}/api/messages/noretry
+Content-Type: {{json}}
+
+{
+  "text": "please FAIL me (no-retry)"
+}

@@ -1,4 +1,4 @@
-package id.ysydev.kafka.sender.dlt;
+package id.ysydev.kafka.consumer.dlt;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -46,7 +46,7 @@ public class DltEvent {
     private Instant receivedAt;
 
     @Column(name = "status", nullable = false)
-    private String status;
+    private String status = "NEW";
 
     @Column(name = "replayed_at")
     private Instant replayedAt;
