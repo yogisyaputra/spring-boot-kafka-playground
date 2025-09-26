@@ -1,0 +1,36 @@
+server:
+  port: 8081
+
+app:
+  topic: demo.messages   # Nama topic utama; pastikan sama dengan yang digunakan consumer
+  topic2: demo.notifications
+
+spring:
+  application:
+    name: kafka-sender
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://192.168.100.30:5432/kafka-playground}
+    username: ${SPRING_DATASOURCE_USERNAME:appuser}
+    password: ${SPRING_DATASOURCE_PASSWORD:supersecret}
+  flyway:
+    baseline-on-migrate: true
+    locations:
+      - classpath:migrations
+    validate-on-migrate: true
+    enabled: true
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+        default_schema: public
+  kafka:
+    bootstrap-servers: 192.168.100.30:9094 # Alamat broker Kafka
+    producer:
+      # Producer memakai String key dan JSON value
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    properties:
+      spring.json.add.type.headers: false # supaya header type tidak wajib, aman untuk lintas service

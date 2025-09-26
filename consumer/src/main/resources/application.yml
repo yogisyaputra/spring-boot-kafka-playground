@@ -1,0 +1,68 @@
+# Konfigurasi aplikasi consumer (Kafka -> @KafkaListener)
+server:
+  port: 8082
+
+app:
+  # Harus sama dengan sender
+  topic: demo.messages
+
+spring:
+  application:
+    name: kafka-consumer
+
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://192.168.100.30:5432/kafka-playground}
+    username: ${SPRING_DATASOURCE_USERNAME:appuser}
+    password: ${SPRING_DATASOURCE_PASSWORD:supersecret}
+  flyway:
+    baseline-on-migrate: true
+    locations:
+      - classpath:migrations
+    validate-on-migrate: true
+    enabled: true
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+        default_schema: public
+
+  kafka:
+    bootstrap-servers: 192.168.100.30:9094
+
+    # --- Konfigurasi Consumer ---
+    consumer:
+      group-id: message-consumer         # nama consumer group
+      auto-offset-reset: earliest        # konsumsi dari awal jika belum ada offset
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+
+#      properties:
+#        # Karena producer tidak mengirim type headers, kita set default class di sini
+#        spring.json.value.default.type: id.ysydev.kafka.consumer.model.MessagePayload
+#        # Batasi paket yang dipercaya demi keamanan deserialization
+#        spring.json.trusted.packages: id.ysydev.kafka.*
+
+    listener:
+      ack-mode: record   # ack per record
+      concurrency: 3     # jalankan 3 thread paralel untuk konsumsi
+
+    # --- Konfigurasi Producer (untuk publish ke DLT saat error) ---
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
+    properties:
+      # Samakan perilaku dengan sender: tanpa type headers
+      spring.json.add.type.headers: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+  endpoint:
+    health:
+      show-details: always
